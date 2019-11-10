@@ -6,7 +6,7 @@
 /*   By: moboustt <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 17:34:23 by moboustt          #+#    #+#             */
-/*   Updated: 2019/11/10 11:33:53 by moboustt         ###   ########.fr       */
+/*   Updated: 2019/11/10 17:25:20 by moboustt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#define RET_VALUE(ret)ret > 0 ? 1 : ret
+    
 int     get_next_line(int fd, char **line);
 size_t  get_index(const char *line);
 char    *ft_strchr(const char *s, int c);

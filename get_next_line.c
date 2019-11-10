@@ -6,7 +6,7 @@
 /*   By: moboustt <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/10 13:43:56 by moboustt          #+#    #+#             */
-/*   Updated: 2019/11/10 16:14:01 by moboustt         ###   ########.fr       */
+/*   Updated: 2019/11/10 17:30:28 by moboustt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,13 @@ int get_next_line(int fd, char **line)
         *line = ft_strjoin(*line, heap);
         //log_info(">>> line ==== %s", *line);
     }
-    if (**line == 0)
-        return (0);
-    return (1);
+    return (byte > 0 ? 1 : byte);
 }
 int main(void)
 {
     int fd;
     char *line;
-    fd = open("test.txt", O_RDONLY);
+    fd = open("tests/one_big_fat_line.txt", O_RDONLY);
     while (get_next_line(fd, &line))
         printf("%s\n", line);
     return (0);
