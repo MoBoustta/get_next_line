@@ -6,7 +6,7 @@
 /*   By: moboustt <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/10 13:43:56 by moboustt          #+#    #+#             */
-/*   Updated: 2019/11/10 17:30:28 by moboustt         ###   ########.fr       */
+/*   Updated: 2019/11/10 17:39:58 by moboustt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,36 +26,26 @@ int get_next_line(int fd, char **line)
         return (-1);
     if (stack)
     {
-        if ((line_i = memchr(stack + 1, '\n', BUFFER_SIZE)))
+        if ((line_i = ft_memchr(stack + 1, '\n', BUFFER_SIZE)))
         {
             *line = ft_substr(stack, 0, line_i - (stack));
-           // log_info(">>> line ==== %s", *line);
-            stack = memchr(stack + 1, '\n', BUFFER_SIZE);
+            stack = ft_memchr(stack + 1, '\n', BUFFER_SIZE);
             stack++;
-           // log_info(">>> stack ==== %s", stack);
             return (1);
         }
-        else
-        {
-         //  log_info("in else");
-            *line = ft_strdup(stack);
-         //  log_info(">>> line === %s ", *line);
-           stack = NULL;
-        }
+        *line = ft_strdup(stack);
+        stack = NULL;
     }
     while((byte = read(fd, heap, BUFFER_SIZE)) > 0)
     {
         heap[byte] = '\0';
-        if ((stack = memchr(heap, '\n', BUFFER_SIZE)))
+        if ((stack = ft_memchr(heap, '\n', BUFFER_SIZE)))
         {
             *line = ft_strjoin(*line, ft_substr(heap, 0, stack - heap));
-     //       log_info(">>> line ==== %s", *line);
             stack = ft_strdup(stack + 1);
-       //     log_info(">>> stack ==== %s", stack);
             return (1);
         }
         *line = ft_strjoin(*line, heap);
-        //log_info(">>> line ==== %s", *line);
     }
     return (byte > 0 ? 1 : byte);
 }

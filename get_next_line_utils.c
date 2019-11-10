@@ -1,20 +1,19 @@
 #include "get_next_line.h"
 size_t  ft_strlen(const char *str);
-size_t    get_index(const char *line)
+void    *ft_memchr(const void *s, int c, size_t n)
 {
-    size_t i;
+    unsigned int    i;
+    unsigned char   *str;
 
     i = 0;
-    if (line)
+    str = (unsigned char*)s;
+    while (n--)
     {
-        while(line[i])
-        {
-            if (line[i] == '\n')
-                return (i);
-            i++;
-        }
+        if (str[i] == (unsigned char)c)
+            return (&str[i]);
+        i++;
     }
-    return (0);
+    return (NULL);
 }
 char	*ft_strchr(const char *s, int c)
 {
@@ -67,10 +66,6 @@ void	*ft_memset(void *b, int c, size_t len)
         i++;
     }
     return (bb);
-}
-void	ft_bzero(void *s, size_t n)
-{
-    ft_memset(s, 0, n);
 }
 char    *ft_strjoin(char *s1, char *s2)
 {
