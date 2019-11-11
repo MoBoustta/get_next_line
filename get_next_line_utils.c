@@ -1,37 +1,5 @@
 #include "get_next_line.h"
 size_t  ft_strlen(const char *str);
-void    *ft_memchr(const void *s, int c, size_t n)
-{
-    unsigned int    i;
-    unsigned char   *str;
-
-    i = 0;
-    str = (unsigned char*)s;
-    while (n--)
-    {
-        if (str[i] == (unsigned char)c)
-            return (&str[i]);
-        i++;
-    }
-    return (NULL);
-}
-char	*ft_strchr(const char *s, int c)
-{
-    int		i;
-    char	*str;
-
-    i = 0;
-    str = (char *)s;
-    while (str[i] != '\0')
-    {
-        if (s[i] == c)
-            return (&str[i]);
-        i++;
-    }
-    if (s[i] == (char)c)
-        return (&str[i]);
-    return (NULL);
-}
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
     size_t		i;
@@ -53,21 +21,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
     sub_str[i] = '\0';
     return (char *)(sub_str);
 }
-void	*ft_memset(void *b, int c, size_t len)
-{
-    unsigned int	i;
-    char			*bb;
-
-    i = 0;
-    bb = b;
-    while (i < len)
-    {
-        bb[i] = c;
-        i++;
-    }
-    return (bb);
-}
-char    *ft_strjoin(char *s1, char *s2)
+char    *ft_strjoin(char **s1, char *s2)
 {
     char		*s3;
     char		*tmp_s3;
@@ -76,18 +30,19 @@ char    *ft_strjoin(char *s1, char *s2)
 
     j = 0;
     i = 0;
-    while (s1[i])
+    while (*s1++)
         i += 1;
     while (s2[j])
         j += 1;
-    if (!s1 || !s2 || !(s3 = (char *)malloc(sizeof(char) * (i + j + 1))))
+    if (!*s1 || !s2 || !(s3 = (char *)malloc(sizeof(char) * (i + j + 1))))
         return (NULL);
     tmp_s3 = s3;
-    while (*s1 != '\0')
-        *tmp_s3++ = *s1++;
+    while (**s1 != '\0')
+        *tmp_s3++ = **s1++;
     while (*s2 != '\0' && *s2 != '\n')
         *tmp_s3++ = *s2++;
     *tmp_s3 = '\0';
+    free_d_shit(s1);
     return (s3);
 }
 char *ft_strdup(char *s1)

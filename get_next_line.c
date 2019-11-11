@@ -11,41 +11,68 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "dbg.h"
+void free_d_shit(char **to_free)
+{
+    free(*to_free);
+    *to_free = NULL;
+}
+int gnl_get_index(char *stack)
+{
+    int i;
+
+    i = 0;
+    while (stack[i])
+    {
+        if (stack[i] == '\n')
+            return (i);
+        i++;
+    }
+    return (-1);
+}
+
+void gnl_verify_line(char **line, char **stack, char **heap)
+{
+    int index;
+    char *add;
+    index = gnl_get_index(*heap);
+    *stack = ft_strdup(&heap[0][index + 1]);
+    add = ft_substr(*heap, 0, index);
+    *line = ft_strjoin(line, add);
+    free_d_shit(heap);
+    free_d_shit(&add);
+}
 int get_next_line(int fd, char **line)
 {
     static char *stack;
-   char *line_i;
     char *heap;
     int byte;
 
     byte = 0;
-    heap = NULL;
     *line = ft_strdup("");
-    if (!line || fd < 0 || (read(fd, heap, 0) < 0) || (!(heap = malloc(BUFFER_SIZE + 1 * sizeof(char)))))
+    if (!(heap = malloc(BUFFER_SIZE + 1 * sizeof(char))))
         return (-1);
     if (stack)
     {
-        if ((line_i = ft_memchr(stack + 1, '\n', BUFFER_SIZE)))
+        if (gnl_get_index(stack) > -1)
         {
-            *line = ft_substr(stack, 0, line_i - (stack));
-            stack = ft_memchr(stack + 1, '\n', BUFFER_SIZE);
-            stack++;
+            heap = ft_strdup(stack);
+            gnl_verify_line(line, &stack, &heap);
+            free_d_shit(&heap);
             return (1);
         }
         *line = ft_strdup(stack);
-        stack = NULL;
+        free_d_shit(&stack);
     }
-    while((byte = read(fd, heap, BUFFER_SIZE)) > 0)
+    while ((byte = read(fd, heap, BUFFER_SIZE)) > 0)
     {
         heap[byte] = '\0';
-        if ((stack = ft_memchr(heap, '\n', BUFFER_SIZE)))
+        if (gnl_get_index(heap) > -1)
         {
-            *line = ft_strjoin(*line, ft_substr(heap, 0, stack - heap));
-            stack = ft_strdup(stack + 1);
+            gnl_verify_line(line, &stack, &heap);
+            free_d_shit(&heap);
             return (1);
         }
-        *line = ft_strjoin(*line, heap);
+        *line = ft_strjoin(line, heap);
     }
     return (byte > 0 ? 1 : byte);
 }
@@ -53,7 +80,7 @@ int main(void)
 {
     int fd;
     char *line;
-    fd = open("tests/one_big_fat_line.txt", O_RDONLY);
+    fd = open("tests/dracula.txt", O_RDONLY);
     while (get_next_line(fd, &line))
         printf("%s\n", line);
     return (0);

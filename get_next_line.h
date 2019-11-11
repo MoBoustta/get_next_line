@@ -21,16 +21,13 @@
 #include <fcntl.h>
 
 #define RET_VALUE(ret)ret > 0 ? 1 : ret
-void    *ft_memchr(const void *s, int c, size_t n);
 int     get_next_line(int fd, char **line);
-size_t  get_index(const char *line);
-char    *ft_strchr(const char *s, int c);
-char    *ft_strjoin(char *s1, char *s2);
+char    *ft_strjoin(char **s1, char *s2);
 char    *ft_strdup(char *s1);
-void    ft_bzero(void *s, size_t n);
-void    *ft_memset(void *b, int c, size_t len);
 char    *ft_substr(char const *s, unsigned int start, size_t len);
-void    *ft_memchr(const void *s, int c, size_t n);
 size_t  ft_strlen(const char *s);
+void free_d_shit(char **to_free);
+int gnl_get_index(char *stack);
+void gnl_verify_line(char **line, char **stack, char **heap);
 
 #endif
