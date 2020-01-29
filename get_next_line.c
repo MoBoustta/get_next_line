@@ -6,20 +6,11 @@
 /*   By: moboustt <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/10 13:43:56 by moboustt          #+#    #+#             */
-/*   Updated: 2019/11/12 14:52:54 by moboustt         ###   ########.fr       */
+/*   Updated: 2019/11/13 14:46:08 by moboustt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-void		free_d_shit(char **to_free)
-{
-	if (*to_free != NULL)
-	{
-		free(*to_free);
-		*to_free = NULL;
-	}
-}
 
 int			gnl_get_index(char *stack)
 {
@@ -35,8 +26,10 @@ int			gnl_get_index(char *stack)
 	return (-1);
 }
 
-int			gnl_handle_stack(char **line, char **stack, char **heap)
+int			gnl_handle_stack(char **line, char **stack, char **heap, int fd)
 {
+	if (fd < 0 || !line)
+		return (-1);
 	if (*stack)
 	{
 		if (gnl_get_index(*stack) > -1)
@@ -67,27 +60,29 @@ void		gnl_verify_line(char **line, char **stack, char **heap)
 
 int			get_next_line(int fd, char **line)
 {
-	static	char	*stack;
+	static	char	*stack[1000];
 	char			*heap;
 	int				byte;
 
-	byte = 0;
-	heap = NULL;
-	*line = ft_strdup("");
-	if ((byte = gnl_handle_stack(line, &stack, &heap)) == 1)
+	*line = NULL;
+	if ((byte = gnl_handle_stack(line, &stack[fd], &heap, fd)) == 1)
 		return (1);
-	if (!(heap = malloc(BUFFER_SIZE + 1 * sizeof(char))))
+	if (*line == NULL)
+		*line = ft_strdup("");
+	if ((!(BUFFER_SIZE >= 0 && BUFFER_SIZE <= MAX_INT)) ||
+	(!(heap = malloc(BUFFER_SIZE + 1 * sizeof(char)))))
 		return (-1);
 	while ((byte = read(fd, heap, BUFFER_SIZE)) > 0)
 	{
 		heap[byte] = '\0';
 		if (gnl_get_index(heap) > -1)
 		{
-			gnl_verify_line(line, &stack, &heap);
+			gnl_verify_line(line, &stack[fd], &heap);
 			return (1);
 		}
 		*line = ft_strjoin(*line, heap);
-		free_d_shit(&stack);
 	}
+	if (!byte)
+		free_d_shit(&heap);
 	return (byte > 0 ? 1 : byte);
 }
