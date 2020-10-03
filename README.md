@@ -15,33 +15,35 @@ What you should learn from this project:
 
 ## Prototype
 
-`int get_next_line(int fd, char **line);;`
+`int get_next_line(int fd, char **line);`
 
 ## Usage
 
 ### Parameters
 
-- #1. file descriptor for reading
-- #2. The value of what has been read
+- `#1. file descriptor for reading`
+- `#2. The value of what has been read`
 
 ### Return value
 
-- 1 : A line has been read. 
-- 0 : EOF has been reached.
-- -1 : An error happened.
+- `1 : A line has been read.`
+- `0 : EOF has been reached.`
+- `-1 : An error happened.`
 
-### NOTE:
-
-- Calling get_next_line in a loop will then allow you to read the text available on a file descriptor one line at a time until the EOF.
-
-
-# How To Set Up
+## How To Set Up
 
 - `git clone https://github.com/MoBoustta/get_next_line.git`
 - `cd get_next_line`
-- `create a .c file, add a main() to the file call include ft_get_next_line.h header`
-- `call get_next_line()`
-- `gcc/clang *.c file.c; ./aout`
+- `create a .c for example main.c`
+- `add a main() and include ft_get_next_line.h header to main.c`
+- `call get_next_line() inside the main()`
+- `gcc -Wall -Wextra -Werror -D BUFFER_SIZE=32 get_next_line.c get_next_line_utils.c main.c`
+  ![picture](img/img.png)
+
+## NOTES
+
+- Calling get_next_line in a loop will then allow you to read the text available on a file descriptor one line at a time until the EOF.
+- The BUFFER_SIZE defined during compilation is used by 'built_in read function' to read from a file or from stdin.
 
 ## Author
 
